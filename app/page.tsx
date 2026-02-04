@@ -275,12 +275,12 @@ export default function Home() {
           </p>
 
           {/* STATS GRID */}
-          <div className="mt-14 grid md:grid-cols-4 gap-10">
+          <div className="mt-14 grid md:grid-cols-3 gap-10">
             {[
               { label: "Years Experience", number: 9, suffix: "+" },
               { label: "Cars Serviced", number: 1000, suffix: "+" },
               { label: "Happy Customers", number: 200, suffix: "+" },
-              { label: "24x7 Support", number: 24, suffix: "x7" },
+              
             ].map((stat) => (
               <motion.div
                 key={stat.label}

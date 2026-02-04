@@ -36,13 +36,17 @@ export default function Home() {
           transition={{ delay: 0.7, duration: 0.5 }}
           className="mt-10 flex justify-center gap-6 flex-wrap"
         >
-          <button className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg">
-            Book Service
-          </button>
+          <Link href="/booking">
+    <button className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg">
+      Book Service
+    </button>
+  </Link>
 
-          <button className="border border-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-black transition">
-            View Offers
-          </button>
+  <Link href="/offers">
+    <button className="border border-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-black transition">
+      View Offers
+    </button>
+  </Link>
         </motion.div>
       </section>
 

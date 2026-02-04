@@ -2,9 +2,7 @@
 
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { packages } from "@/app/data/packages";
 
@@ -23,12 +21,13 @@ const TIME_SLOTS = [
 
 const VEHICLE_TYPES = ["Hatchback", "Sedan", "SUV", "Luxury"];
 
-// 🔴 CHANGE THIS TO REAL BUSINESS NUMBER (NO +, NO SPACES)
-const OWNER_WHATSAPP = "+919429805368";
+// 🔴 CHANGE TO REAL BUSINESS NUMBER (NO +, NO SPACES)
+const OWNER_WHATSAPP = "919812345678";
 
-export default function BookingPage() {
+/* ---------------- INNER FORM ---------------- */
+
+function BookingForm() {
   const searchParams = useSearchParams();
-
   const serviceFromUrl = searchParams.get("service") || "";
 
   const [formData, setFormData] = useState({
@@ -44,9 +43,6 @@ export default function BookingPage() {
     address: "",
   });
 
-  const [loading, setLoading] = useState(false);
-
-  // Sync service from URL
   useEffect(() => {
     if (serviceFromUrl) {
       setFormData((prev) => ({
@@ -56,25 +52,17 @@ export default function BookingPage() {
     }
   }, [serviceFromUrl]);
 
-  // Handle input change
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ WhatsApp submit logic
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    setLoading(true);
 
     const message = `
 📅 New Booking Request – One Stop Carz
@@ -88,7 +76,6 @@ export default function BookingPage() {
 
 🛠 Service: ${formData.service}
 
-📍 Branch: ${formData.branch}
 📆 Date: ${formData.date}
 ⏰ Slot: ${formData.slot}
 
@@ -98,11 +85,10 @@ ${formData.address}
 
     const encodedMessage = encodeURIComponent(message);
 
-    const whatsappUrl = `https://wa.me/${OWNER_WHATSAPP}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, "_blank");
-
-    setLoading(false);
+    window.open(
+      `https://wa.me/${OWNER_WHATSAPP}?text=${encodedMessage}`,
+      "_blank",
+    );
   };
 
   return (
@@ -286,14 +272,23 @@ ${formData.address}
           <div className="md:col-span-2">
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-semibold disabled:opacity-50"
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-semibold"
             >
-              {loading ? "Opening WhatsApp..." : "Confirm Booking"}
+              Confirm Booking
             </button>
           </div>
         </form>
       </div>
     </main>
+  );
+}
+
+/* ---------------- PAGE WRAPPER ---------------- */
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div className="p-20 text-center">Loading…</div>}>
+      <BookingForm />
+    </Suspense>
   );
 }

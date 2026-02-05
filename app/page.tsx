@@ -6,6 +6,7 @@ import Link from "next/link";
 import { packages } from "@/app/data/packages";
 import Counter from "./components/Counter";
 import LimitedOfferPopup from "@/app/components/LimitedOfferPopup";
+import {services} from "@/app/data/services";
 
 export default function Home() {
   return (
@@ -67,28 +68,34 @@ export default function Home() {
 
           {/* SERVICES GRID */}
           <div className="mt-12 grid md:grid-cols-4 gap-6">
-            {[
-              "Mechanical Service",
-              "Body Denting & Painting",
-              "Ceramic Coating",
-              "Cashless Insurance Claim",
-            ].map((service) => (
-              <motion.div
-                key={service}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition"
-              >
-                <h3 className="text-xl font-semibold">{service}</h3>
-                <p className="mt-2 text-gray-600">
-                  Professional technicians with genuine parts and transparent
-                  pricing.
-                </p>
-              </motion.div>
-            ))}
-          </div>
+  {services.slice(0, 4).map((service) => (
+    <motion.div
+      key={service.slug}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+      className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition flex flex-col"
+    >
+      <h3 className="text-xl font-semibold">
+        {service.title}
+      </h3>
+
+      <p className="mt-2 text-gray-600 flex-grow">
+        {service.shortDesc}
+      </p>
+
+      {/* BUTTON */}
+      <Link
+        href={`/services/${service.slug}`}
+        className="mt-4 inline-block text-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold"
+      >
+        View Details
+      </Link>
+    </motion.div>
+  ))}
+</div>
+
         </div>
       </section>
 

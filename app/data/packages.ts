@@ -1,3 +1,5 @@
+// app/data/package.ts
+
 export type PackageCategory = "package" | "amc" | "membership";
 
 export type VehicleType = "Hatchback" | "Sedan" | "SUV" | "Luxury";

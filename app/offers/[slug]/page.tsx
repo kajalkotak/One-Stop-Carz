@@ -4,6 +4,22 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { packages } from "@/app/data/packages";
 
+/* ----------------------------------
+   REQUIRED FOR VERCEL STATIC BUILD
+----------------------------------- */
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return packages.map((pkg) => ({
+    slug: pkg.slug,
+  }));
+}
+
+/* ----------------------------------
+   PAGE COMPONENT
+----------------------------------- */
+
 export default function OfferDetailPage({
   params,
 }: {
@@ -18,26 +34,18 @@ export default function OfferDetailPage({
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-20">
       <div className="max-w-5xl mx-auto bg-white p-10 rounded-xl shadow">
-
         {/* TITLE */}
-        <h1 className="text-4xl font-bold">
-          {item.title}
-        </h1>
+        <h1 className="text-4xl font-bold">{item.title}</h1>
 
         {item.subtitle && (
-          <p className="mt-2 text-gray-500 text-lg">
-            {item.subtitle}
-          </p>
+          <p className="mt-2 text-gray-500 text-lg">{item.subtitle}</p>
         )}
 
         {/* SHORT DESC */}
-        <p className="mt-4 text-gray-700">
-          {item.shortDesc}
-        </p>
+        <p className="mt-4 text-gray-700">{item.shortDesc}</p>
 
-        {/* PRICE SECTION */}
+        {/* PRICE BOX */}
         <div className="mt-8 border rounded-lg p-6 bg-gray-50">
-
           {/* AMC / MEMBERSHIP */}
           {item.actualPrice && (
             <div>
@@ -53,7 +61,7 @@ export default function OfferDetailPage({
             </div>
           )}
 
-          {/* PETROL PACKAGE */}
+          {/* PETROL */}
           {item.petrolOfferPrice && (
             <div className="mt-4">
               {item.petrolActualPrice && (
@@ -68,7 +76,7 @@ export default function OfferDetailPage({
             </div>
           )}
 
-          {/* DIESEL PACKAGE */}
+          {/* DIESEL */}
           {item.dieselOfferPrice && (
             <div className="mt-2">
               {item.dieselActualPrice && (
@@ -93,9 +101,7 @@ export default function OfferDetailPage({
 
         {/* DESCRIPTION */}
         <div className="mt-10">
-          <h2 className="text-2xl font-semibold">
-            Package Details
-          </h2>
+          <h2 className="text-2xl font-semibold">Package Details</h2>
 
           <p className="mt-3 text-gray-700 leading-relaxed">
             {item.description}
@@ -104,9 +110,7 @@ export default function OfferDetailPage({
 
         {/* INCLUDES */}
         <div className="mt-8">
-          <h3 className="text-xl font-semibold">
-            What’s Included
-          </h3>
+          <h3 className="text-xl font-semibold">What’s Included</h3>
 
           <ul className="mt-4 grid md:grid-cols-2 gap-3 list-disc pl-6 text-gray-700">
             {item.includes.map((point, idx) => (
@@ -131,7 +135,6 @@ export default function OfferDetailPage({
             Back to Offers
           </Link>
         </div>
-
       </div>
     </main>
   );

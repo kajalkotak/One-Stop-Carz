@@ -1,17 +1,15 @@
 // app/offers/[slug]/page.tsx
 
-import { packages } from "@/app/data/packages";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { packages } from "@/app/data/packages";
 
-export default async function OfferDetailPage({
+export default function OfferDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
-
-  const item = packages.find((p) => p.slug === slug);
+  const item = packages.find((p) => p.slug === params.slug);
 
   if (!item) {
     notFound();
@@ -19,37 +17,106 @@ export default async function OfferDetailPage({
 
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-20">
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow p-10">
-        {/* TITLE */}
-        <h1 className="text-4xl font-bold">{item.title}</h1>
+      <div className="max-w-5xl mx-auto bg-white p-10 rounded-xl shadow">
 
-        {item.duration && <p className="mt-1 text-gray-500">{item.duration}</p>}
+        {/* TITLE */}
+        <h1 className="text-4xl font-bold">
+          {item.title}
+        </h1>
+
+        {item.subtitle && (
+          <p className="mt-2 text-gray-500 text-lg">
+            {item.subtitle}
+          </p>
+        )}
+
+        {/* SHORT DESC */}
+        <p className="mt-4 text-gray-700">
+          {item.shortDesc}
+        </p>
+
+        {/* PRICE SECTION */}
+        <div className="mt-8 border rounded-lg p-6 bg-gray-50">
+
+          {/* AMC / MEMBERSHIP */}
+          {item.actualPrice && (
+            <div>
+              <p className="text-sm line-through text-gray-400">
+                ₹{item.actualPrice}
+              </p>
+
+              {item.offerPrice && (
+                <p className="text-3xl font-bold text-red-600">
+                  ₹{item.offerPrice}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* PETROL PACKAGE */}
+          {item.petrolOfferPrice && (
+            <div className="mt-4">
+              {item.petrolActualPrice && (
+                <p className="text-sm line-through text-gray-400">
+                  Petrol: ₹{item.petrolActualPrice}
+                </p>
+              )}
+
+              <p className="text-xl font-semibold text-red-600">
+                Petrol: ₹{item.petrolOfferPrice}
+              </p>
+            </div>
+          )}
+
+          {/* DIESEL PACKAGE */}
+          {item.dieselOfferPrice && (
+            <div className="mt-2">
+              {item.dieselActualPrice && (
+                <p className="text-sm line-through text-gray-400">
+                  Diesel: ₹{item.dieselActualPrice}
+                </p>
+              )}
+
+              <p className="text-xl font-semibold text-red-600">
+                Diesel: ₹{item.dieselOfferPrice}
+              </p>
+            </div>
+          )}
+
+          {/* DURATION */}
+          {item.duration && (
+            <p className="mt-3 text-sm text-gray-600">
+              Duration: {item.duration}
+            </p>
+          )}
+        </div>
 
         {/* DESCRIPTION */}
-        <p className="mt-4 text-lg text-gray-700">{item.description}</p>
+        <div className="mt-10">
+          <h2 className="text-2xl font-semibold">
+            Package Details
+          </h2>
 
-        {/* PRICE */}
-        <div className="mt-6 text-xl font-semibold text-red-600">
-          {item.fixedPrice && <>₹{item.fixedPrice}</>}
-          {item.petrolPrice && <>Petrol: ₹{item.petrolPrice}</>}
-          {item.dieselPrice && <> | Diesel: ₹{item.dieselPrice}</>}
+          <p className="mt-3 text-gray-700 leading-relaxed">
+            {item.description}
+          </p>
         </div>
 
         {/* INCLUDES */}
         <div className="mt-8">
-          <h3 className="text-2xl font-semibold mb-3">What’s Included</h3>
+          <h3 className="text-xl font-semibold">
+            What’s Included
+          </h3>
 
-          <ul className="list-disc pl-6 space-y-2">
-            {item.includes.map((inc) => (
-              <li key={inc} className="text-gray-700">
-                {inc}
-              </li>
+          <ul className="mt-4 grid md:grid-cols-2 gap-3 list-disc pl-6 text-gray-700">
+            {item.includes.map((point, idx) => (
+              <li key={idx}>{point}</li>
             ))}
           </ul>
         </div>
 
-        {/* ACTIONS */}
-        <div className="mt-10 flex gap-4">
+        {/* CTA */}
+        <div className="mt-10 flex flex-wrap gap-4">
           <Link
             href={`/booking?service=${encodeURIComponent(item.title)}`}
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md font-semibold"
@@ -57,10 +124,14 @@ export default async function OfferDetailPage({
             Book Now
           </Link>
 
-          <Link href="/offers" className="border px-6 py-3 rounded-md">
+          <Link
+            href="/offers"
+            className="border border-gray-300 px-6 py-3 rounded-md font-semibold hover:bg-gray-100"
+          >
             Back to Offers
           </Link>
         </div>
+
       </div>
     </main>
   );

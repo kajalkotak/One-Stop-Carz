@@ -277,7 +277,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto text-center">
           {/* HEADING */}
           <h2 className="text-4xl font-bold">
-            Trusted by <span className="text-red-600">Hundreds</span>
+            Trusted by <span className="text-red-600">Thousands</span>
           </h2>
 
           <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
@@ -288,8 +288,8 @@ export default function Home() {
           <div className="mt-14 grid md:grid-cols-3 gap-10">
             {[
               { label: "Years Experience", number: 9, suffix: "+" },
-              { label: "Cars Serviced", number: 1000, suffix: "+" },
-              { label: "Happy Customers", number: 200, suffix: "+" },
+              { label: "Cars Serviced", number: 20000, suffix: "+" },
+              
             ].map((stat) => (
               <motion.div
                 key={stat.label}

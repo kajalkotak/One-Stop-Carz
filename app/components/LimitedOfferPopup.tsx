@@ -9,15 +9,13 @@ export default function LimitedOfferPopup() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const alreadySeen = sessionStorage.getItem("ceramic-popup");
+  const timer = setTimeout(() => {
+    setShow(true);
+  }, 1200);
 
-    if (!alreadySeen) {
-      setTimeout(() => {
-        setShow(true);
-        sessionStorage.setItem("ceramic-popup", "true");
-      }, 1200);
-    }
-  }, []);
+  return () => clearTimeout(timer);
+}, []);
+
 
   if (!show) return null;
 

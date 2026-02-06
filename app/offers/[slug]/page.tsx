@@ -3,27 +3,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { packages } from "@/app/data/packages";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const item = packages.find((p) => p.slug === params.slug);
+/* ----------------------------------
+   STATIC PARAMS
+----------------------------------- */
 
-  if (!item) return {};
-
-  return {
-    title: item.title,
-    description: item.shortDesc,
-  };
+export async function generateStaticParams() {
+  return packages.map((pkg) => ({
+    slug: pkg.slug,
+  }));
 }
 
-export default function OfferDetailPage({
+/* ----------------------------------
+   PAGE
+----------------------------------- */
+
+export default async function OfferDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const item = packages.find((p) => p.slug === params.slug);
+  const { slug } = params;
+
+  const item = packages.find((p) => p.slug === slug);
 
   if (!item) {
     notFound();
@@ -65,7 +66,7 @@ export default function OfferDetailPage({
               alt={item.title}
               width={1200}
               height={1600}
-              className="w-full object-contain rounded-xl"
+              className="w-full rounded-xl object-contain"
               priority
             />
           </div>

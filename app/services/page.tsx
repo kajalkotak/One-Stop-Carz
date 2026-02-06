@@ -1,5 +1,11 @@
 // app/services/page.tsx
 
+export const metadata = {
+  title: "Our Services | One Stop Carz Vadodara",
+  description:
+    "Mechanical service, ceramic coating, denting painting, insurance claim and professional car detailing services in Vadodara.",
+};
+
 import Link from "next/link";
 import { services } from "@/app/data/services";
 

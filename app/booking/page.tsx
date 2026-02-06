@@ -1,6 +1,12 @@
 // app/booking/page.tsx
 
-"use client";
+export const metadata = {
+  title: "Book Car Service in Vadodara | One Stop Carz",
+  description:
+    "Book your car servicing, AMC plans, ceramic coating and repair appointment online at One Stop Carz Vadodara.",
+};
+
+("use client");
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";

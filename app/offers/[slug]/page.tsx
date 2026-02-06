@@ -3,27 +3,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { packages } from "@/app/data/packages";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const item = packages.find((p) => p.slug === params.slug);
+/* ----------------------------------
+   STATIC PARAMS
+----------------------------------- */
 
-  if (!item) return {};
-
-  return {
-    title: item.title,
-    description: item.shortDesc,
-  };
+export async function generateStaticParams() {
+  return packages.map((pkg) => ({
+    slug: pkg.slug,
+  }));
 }
 
-export default function OfferDetailPage({
+/* ----------------------------------
+   PAGE
+----------------------------------- */
+
+export default async function OfferDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const item = packages.find((p) => p.slug === params.slug);
+  const { slug } = params;
+
+  const item = packages.find((p) => p.slug === slug);
 
   if (!item) {
     notFound();
@@ -50,6 +51,7 @@ export default function OfferDetailPage({
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-20">
       <div className="max-w-5xl mx-auto bg-white p-10 rounded-xl shadow">
+
         {/* TITLE */}
         <h1 className="text-4xl font-bold">{item.title}</h1>
 
@@ -65,7 +67,7 @@ export default function OfferDetailPage({
               alt={item.title}
               width={1200}
               height={1600}
-              className="w-full object-contain rounded-xl"
+              className="w-full rounded-xl object-contain"
               priority
             />
           </div>
@@ -76,6 +78,7 @@ export default function OfferDetailPage({
 
         {/* PRICE */}
         <div className="mt-8 border rounded-lg p-6 bg-gray-50">
+
           {item.actualPrice && (
             <>
               <p className="text-sm line-through text-gray-400">
@@ -156,6 +159,7 @@ export default function OfferDetailPage({
             Back to Offers
           </Link>
         </div>
+
       </div>
     </main>
   );
